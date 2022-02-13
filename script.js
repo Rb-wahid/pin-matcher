@@ -17,8 +17,47 @@ function getCode() {
 
 function generateCode() {
   let code = getCode();
-  let generateInputValue = setValue("generate-input", code, true);
+  setValue("generate-input", code, true);
 }
 document.getElementById("generate-btn").addEventListener("click", () => {
   generateCode();
+});
+
+document.getElementById("numbers").addEventListener("click", (event) => {
+  let pinClick = event.target.innerText;
+  let pin = "";
+  if (isNaN(pinClick)) {
+    if (pinClick == "C") {
+      pin = "";
+    } else if (pinClick == "<") {
+      pin = getValue("pin-input", true);
+      pin = pin.slice(0, pin.length - 1);
+    }
+  } else {
+    pin = getValue("pin-input", true) + pinClick;
+  }
+  setValue("pin-input", pin, true);
+});
+
+function isPinMatch() {
+  let generatePin = getValue("generate-input", true);
+  let matchingPin = getValue("pin-input", true);
+
+  return generatePin == matchingPin;
+}
+
+function displayAndHide(display, hide) {
+  display.style.display = "block";
+  hide.style.display = "none";
+}
+
+document.getElementById("submit-btn").addEventListener("click", (e) => {
+  let success = document.getElementById("success");
+    let error = document.getElementById("error");
+    
+  if (isPinMatch()) {
+    displayAndHide(success, error);
+  } else {
+    displayAndHide(error, success);
+  }
 });
